@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Welcome player</title>
+                <style type="text/css">
+                    .ui-button-text {
+                        padding: 0px !important;
+                    }
+
+                    .page-footer:after {
+                        color: #000000;
+                        content: "© 2013 Word similarity study application. All rights reserved.";
+                        bottom: 20px;
+                        position: absolute;
+                    }
+                </style>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit  position="north" size="135" resizable="false" closable="false" collapsible="false" >
+                    <p:graphicImage width="100%" height="96%" url="banner.jpg"  title="dssimilarity"></p:graphicImage>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="200"  header="Menu" collapsible="true" resizable="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Player">
+                                <p:menuitem value="Login" ajax="false" url="faces/login.xhtml" rendered="#{mbplayer.loggedIn}" />
+                                <p:menuitem value="Register" ajax="false" url="faces/register.xhtml" rendered="#{mbplayer.loggedIn}" />
+                                <p:menuitem value="Logout" ajax="false" action="#{mbplayer.logout()}" />
+                            </p:submenu>
+                            <p:submenu label="Game">
+                                <p:menuitem value="Player index" ajax="false" action="#{mbplayer.indexPlayer()}" />
+                                <p:menuitem value="Player administer" ajax="false" action="#{mbplayer.administrate()}" rendered="#{mbplayer.isPlayerAdmin()}" />
+                                <p:menuitem value="Export results" ajax="false" action="#{mbplayer.exportResults()}" rendered="#{mbplayer.isPlayerAdmin()}" />
+                                <p:menuitem value="Play game" ajax="false" action="#{mbplayer.play()}" />
+                                <p:menuitem value="Previous results" ajax="false" action="#{mbplayer.playersResults()}" />
+                            </p:submenu>
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="50" closable="true" collapsible="true" styleClass="page-footer">
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <form id="welcome">
+                        <h:outputLabel value="Welcome, #{mbplayer.player.firstName} to the player index page."/>
+                        <p>You have measured <b>#{mbplayer.player.playerMeasuredSimilarityList.size()}</b> words for their similarity until now</p>
+
+                        <p>In order to play the game, please go to <p:commandLink value="play game" action="#{mbplayer.playersResults()}" /> page. There below the welcome message you will see two words or phrases. Words that are chosen are properties of two parallel ontologies, and represent some relation between two objects (there is large variety of objects in ontologies). Right below them, you will see two links, each leading to the description of word above it. <i>Be careful, words may appear very similar and present two very different things, and other way around.</i> 
+                            You will be asked to rate similarity between a pair of words using star icons. </p>
+                        <p>There are ten stars and a button to clear all selection. The rules of this game are simple:</p>
+                        <ul>
+                            <li>If you don't select anything your grade of similarity between two words is zero which means that you think the two words are not similar at all. On the other hand, if you grade similarity between two words with ten start, that means you belive the words are similar. When you click on stars to rate, you will receive notification of grade you have chosen.</li>
+                            <li>Clicking on button "Rate and next" you will get new pair of words to rate. Repeat process until you want to and click "Finish playing" to save your results.</li>
+                        </ul>
+                        <p>At any time, you can preview your previous results by clicking on <p:commandLink value="Previous results" action="#{mbplayer.play()}" /> link in your menu. There you can edit your previous grades if you feel you had made a mistake during playing the game.</p>
+                    </form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
+

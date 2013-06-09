@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <f:view contentType="text/html">
+        <h:head>
+            <title>Word similarity game</title>
+            <style type="text/css">
+                .ui-button-text {
+                    padding: 0px !important;
+                }
+
+                .page-footer:after {
+                    color: #000000;
+                    content: "© 2013 Word similarity study application. All rights reserved.";
+                    bottom: 20px;
+                    position: absolute;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:layout fullPage="true">
+                <p:layoutUnit  position="north" size="135" resizable="true" closable="true" collapsible="true" >
+                    <p:graphicImage width="100%" height="96%" url="banner.jpg" title="WORDS SIMILARITY"></p:graphicImage>
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="200"  header="Menu" collapsible="true" resizable="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Player">
+                                <p:menuitem value="Login" ajax="false" url="./login.xhtml" rendered="#{mbplayer.loggedIn}" />
+                                <p:menuitem value="Register" ajax="false" url="./RegisterNewPlayer.xhtml" rendered="#{mbplayer.loggedIn}" />
+                                <p:menuitem value="Logout" ajax="false" action="#{mbplayer.logout}" />
+                            </p:submenu>
+                            <p:submenu label="Game">
+                                <p:menuitem value="Player index" ajax="false" action="#{mbplayer.indexPlayer()}" />
+                                <p:menuitem value="Player administer" ajax="false" action="#{mbplayer.administrate()}" rendered="#{mbplayer.isPlayerAdmin()}" />
+                                <p:menuitem value="Export results" ajax="false" action="#{mbplayer.exportResults()}" rendered="#{mbplayer.isPlayerAdmin()}" />
+                                <p:menuitem value="Play game" ajax="false" action="#{mbplayer.play}" />
+                                <p:menuitem value="Previous results" ajax="false" action="#{mbplayer.playersResults()}" />
+                            </p:submenu>
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+                <p:layoutUnit position="south" size="50" closable="true" collapsible="true" styleClass="page-footer">
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h5><h:outputLabel value="Welcome, #{mbplayer.player.firstName} time to play the game! :)"/></h5>
+                    <p:separator id="separator"/>
+                    <h:outputLabel value="Rate similarity between these two words:" />
+                    <h:form id="game_form"> 
+                        <br/>
+                        <p:panel id="panel">  
+
+                            <table border="0">
+
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <h:outputLabel id="word_one" value="First word is: #{mbsimilarity.currentWordSimilarity.firstWord}" />
+                                            <p:spacer width="20" height="10" />
+                                        </td>
+                                        <td>
+                                            <h:outputLabel id="word_two" value="Second word is: #{mbsimilarity.currentWordSimilarity.secondWord}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p:commandLink id="fwdescription" oncomplete="firstWrdDescr.show()" style="margin-right:20px;" ajax="true">  
+                                                <h:outputText value="First word description" />  
+                                            </p:commandLink>
+                                            <p:spacer width="20" height="10" />
+
+                                        </td>
+                                        <td> 
+                                            <h:outputLink id="swdescription" value="#{mbsimilarity.dbpediaLink()}" target="newPopup" style="margin-right:20px;">  
+                                                <h:outputText value="Second word description" />  
+                                            </h:outputLink>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </p:panel>
+                        <br/>
+                        <br/>
+                        <p:growl id="messages" showDetail="true"/>  
+
+                        <h:panelGrid columns="2" cellpadding="5">  
+                            <h:outputText value="Choose grade carefully:  " />  
+                            <p:rating value="#{mbsimilarity.currentWordSimRate}" stars="10" >  
+                                <p:ajax event="rate" listener="#{mbsimilarity.onrate}" update="messages" />  
+                                <p:ajax event="cancel" listener="#{mbsimilarity.oncancel}" update="messages" />  
+                            </p:rating>  
+                        </h:panelGrid>
+                        <br/>
+                        <br/>
+                        <p:commandButton value="Rate and next" action="#{mbsimilarity.saveRatingAndNext()}" ajax="true" update="game_form" id="submit" style="margin:5px" styleClass="ui-priority-primary" >
+                        </p:commandButton>
+                        <p:commandButton value="Finish playing" action="#{mbsimilarity.finishPlaying}" id="finish" ajax="false" style="margin:5px">
+                        </p:commandButton>
+
+                        <p:dialog header="Property: #{mbsimilarity.currentWordSimilarity.firstWord} description" widgetVar="firstWrdDescr" showEffect="fade" hideEffect="fade">
+                            <h:outputText id="word_one2" value="#{mbsimilarity.firstWordPropertyDescription}" />
+                        </p:dialog>
+
+
+                    </h:form>
+
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+

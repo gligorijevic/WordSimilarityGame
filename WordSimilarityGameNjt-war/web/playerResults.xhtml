@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Player results</title>
+                <style type="text/css">
+                    .ui-button-text {
+                        padding: 0px !important;
+                    }
+
+                    .page-footer:after {
+                        color: #000000;
+                        content: "© 2013 Word similarity study application. All rights reserved.";
+                        bottom: 20px;
+                        position: absolute;
+                    }
+                </style>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="135" resizable="true" closable="true" collapsible="true" >
+                    <p:graphicImage width="100%" height="96%" url="banner.jpg" title="DATA SET SIMILARITY"></p:graphicImage>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="200"  header="Menu" collapsible="true" resizable="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Player">
+                                <p:menuitem value="Login" ajax="false" url="faces/login.xhtml" rendered="#{mbplayer.loggedIn}" />
+                                <p:menuitem value="Register" ajax="false" url="faces/register.xhtml" rendered="#{mbplayer.loggedIn}"/>
+                                <p:menuitem value="Logout" ajax="false" action="#{mbplayer.logout()}" />
+                            </p:submenu>
+                            <p:submenu label="Game">
+                                <p:menuitem value="Player index" ajax="false" action="#{mbplayer.indexPlayer()}" />
+                                <p:menuitem value="Player administer" ajax="false" action="#{mbplayer.administrate()}" rendered="#{mbplayer.isPlayerAdmin()}" />
+                                <p:menuitem value="Export results" ajax="false" action="#{mbplayer.exportResults()}" rendered="#{mbplayer.isPlayerAdmin()}" />
+                                <p:menuitem value="Play game" ajax="false" action="#{mbplayer.play()}" />
+                                <p:menuitem value="Previous results" ajax="false" action="#{mbplayer.playersResults()}" />
+                            </p:submenu>
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="50" closable="true" collapsible="true" styleClass="page-footer">
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:outputLabel value="Welcome, #{mbplayer.player.firstName} here you can see your previous game results."/> 
+
+                    <h:form id="form">  
+
+                        <p:growl id="messages" showDetail="true"/>  
+
+                        <p:dataTable id="results" var="pms" value="#{mbplayer.player.playerMeasuredSimilarityList}"  editable="true" >   
+                            
+                            <f:facet name="header">  
+                                Player #{mbplayer.player.firstName}'s previous results
+                            </f:facet>  
+
+                            <p:ajax event="rowEdit" listener="#{mbplayer.onEditResults}" update=":form:messages" />  
+                            <p:ajax event="rowEditCancel" listener="#{mbplayer.onCancelResults}" update=":form:messages" />  
+
+                            <p:column headerText="First word" style="width:20%"> 
+                                <h:outputText value="#{pms.wordSimilarity.firstWord}" />  
+                            </p:column>  
+
+                            <p:column headerText="Second year" style="width:20%">  
+                                <h:outputText value="#{pms.wordSimilarity.secondWord}" /> 
+                            </p:column>  
+
+                            <p:column headerText="Grade" style="width:15%">  
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{pms.grade}" />  
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <h:selectOneMenu value="#{pms.grade}" style="width:15%">  
+                                            <f:selectItems value="#{mbsimilarity.grades}" var="grade" itemLabel="#{grade}" itemValue="#{grade}" />  
+                                        </h:selectOneMenu>  
+                                    </f:facet> 
+                                </p:cellEditor>  
+                            </p:column> 
+                            
+                            <p:column style="width:6%">  
+                                <p:rowEditor />  
+                            </p:column>  
+                            
+                        </p:dataTable>  
+                    </h:form>  
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+
+

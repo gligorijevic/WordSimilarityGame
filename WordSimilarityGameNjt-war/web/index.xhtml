@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Word similarity game</title>
+                <style type="text/css">
+                    .ui-button-text {
+                        padding: 0px !important;
+                    }
+
+                    .page-footer:after {
+                        color: #000000;
+                        content: "© 2013 Word similarity study application. All rights reserved.";
+                        bottom: 20px;
+                        position: absolute;
+                    }
+                </style>
+            </f:facet>
+        </h:head>
+        <h:body>
+            <p:layout fullPage="true">
+                <p:layoutUnit  position="north" size="135" resizable="true" closable="true" collapsible="true" >
+                    <p:graphicImage width="100%" height="96%" url="banner.jpg" title="WORDS SIMILARITY"></p:graphicImage>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="200"  header="Menu" collapsible="true" resizable="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Player">
+                                <p:menuitem value="Login" ajax="false" url="faces/login.xhtml" rendered="#{mbplayer.loggedIn}" />
+                                <p:menuitem value="Register" ajax="false" url="faces/register.xhtml" rendered="#{mbplayer.loggedIn}" />
+                            </p:submenu>
+                            <p:submenu label="Game">
+                                <p:menuitem value="Play game" ajax="false" action="#{mbplayer.play()}" />
+                            </p:submenu>
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:outputLabel value="Welcome to WordSimilarity game website"/>
+                    <p:graphicImage width="100%" height="90%" url="welcomeimage.png" title="welcomeimage"></p:graphicImage>
+                </p:layoutUnit>
+                <p:layoutUnit position="south" size="50" closable="true" collapsible="true" styleClass="page-footer">
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+
